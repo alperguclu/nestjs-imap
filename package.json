@@ -1,0 +1,20 @@
+{
+  "name": "nestjs-imap",
+  "version": "1.0.4",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "node-imap": "^0.9.6"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0"
+  }
+}
