@@ -51,11 +51,37 @@ export class EmailService implements OnModuleInit {
   async onModuleInit() {
     this.imapService.connect();
     this.imapService.on('ready', async () => {
-      await this.imapService.openBox('INBOX', true);
+      // Open the mailbox in read-write mode to allow modifying message flags
+      await this.imapService.openBox('INBOX', false);
       const messages = await this.imapService.getMessages(['UNSEEN'], {
-        bodies: ['HEADER', 'TEXT'],
+        bodies: '',
       });
-      console.log(messages);
+
+      console.log('Messages:', messages);
+
+      if (messages.length > 0) {
+        const message = messages[0];
+        const uid = message.attributes.uid;
+
+        console.log('UID:', uid);
+
+        if (uid) {
+          try {
+            const fullMessage = await this.imapService.readMessage(uid);
+            console.log('Full Message:', fullMessage);
+
+            // Mark the message as read
+            await this.imapService.markAsRead(uid);
+            console.log('Message marked as read');
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        } else {
+          console.error('Message UID is not valid');
+        }
+      } else {
+        console.log('No new messages');
+      }
     });
   }
 }
@@ -72,6 +98,7 @@ export class EmailService implements OnModuleInit {
 - **openBox(boxName: string, readOnly: boolean): Promise<void>**: Open a mailbox.
 - **getMessages(criteria: any, fetchOptions: any): Promise<any[]>**: Get messages matching the criteria.
 - **readMessage(uid: number): Promise<any>**: Read a specific message by UID.
+- **markAsRead(uid: number): Promise<void>**: Mark a specific message by UID as read.
 - **on(event: string, callback: (...args: any[]) => void): void**: Listen for IMAP events.
 
 ## License
