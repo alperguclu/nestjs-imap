@@ -24,7 +24,7 @@ export interface ImapConfig {
   host: string;
   port: number;
   tls: boolean;
-  mailParserOptions: object
-  attachments: boolean;
-  attachmentOptions: object;
+  mailParserOption?: object
+  attachments?: boolean;
+  attachmentOptions?: object;
 }

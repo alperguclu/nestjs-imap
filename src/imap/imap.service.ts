@@ -42,6 +42,9 @@ export class ImapService {
   }
 
   readMessage(uid: number): Promise<any> {
+    if (!Number.isInteger(uid)) {
+      return Promise.reject(new Error('UID must be a valid integer.'));
+    }
     return this.getMessages([['UID', uid]], { bodies: ['HEADER.FIELDS (FROM TO SUBJECT DATE)', 'TEXT'] });
   }
 
