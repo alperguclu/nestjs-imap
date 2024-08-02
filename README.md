@@ -16,21 +16,23 @@ To use the `nestjs-imap` module, you need to import it into your NestJS module a
 
 ### Example Configuration
 
-`import { Module } from '@nestjs/common';
+```typescript
+import { Module } from '@nestjs/common';
 import { ImapModule, ImapConfig } from 'nestjs-imap';
 
 const imapConfig: ImapConfig = {
-user: 'your-email@example.com',
-password: 'your-password',
-host: 'imap.example.com',
-port: 993,
-tls: true,
+  user: 'your-email@example.com',
+  password: 'your-password',
+  host: 'imap.example.com',
+  port: 993,
+  tls: true,
 };
 
 @Module({
-imports: [ImapModule.forRoot(imapConfig)],
+  imports: [ImapModule.forRoot(imapConfig)],
 })
-export class AppModule {}`
+export class AppModule {}
+```
 
 ## Usage
 
@@ -38,22 +40,26 @@ You can use the `ImapService` to interact with your IMAP server. Here's an examp
 
 ### Example Service
 
-`import { Injectable, OnModuleInit } from '@nestjs/common';
+```typescript
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ImapService } from 'nestjs-imap';
 
 @Injectable()
 export class EmailService implements OnModuleInit {
-constructor(private readonly imapService: ImapService) {}
+  constructor(private readonly imapService: ImapService) {}
 
-async onModuleInit() {
-this.imapService.connect();
-this.imapService.on('ready', async () => {
-await this.imapService.openBox('INBOX', true);
-const messages = await this.imapService.getMessages(['UNSEEN'], { bodies: ['HEADER', 'TEXT'] });
-console.log(messages);
-});
+  async onModuleInit() {
+    this.imapService.connect();
+    this.imapService.on('ready', async () => {
+      await this.imapService.openBox('INBOX', true);
+      const messages = await this.imapService.getMessages(['UNSEEN'], {
+        bodies: ['HEADER', 'TEXT'],
+      });
+      console.log(messages);
+    });
+  }
 }
-}`
+```
 
 ## API
 
