@@ -24,19 +24,27 @@ export class ImapService {
       this.imap.search(criteria, (err, results) => {
         if (err) reject(err);
 
-        const fetch = this.imap.fetch(results, fetchOptions);
+        const fetch = this.imap.fetch(results, { ...fetchOptions, struct: true });
         fetch.on('message', (msg) => {
-          msg.on('body', (stream) => {
+          const message: any = { headers: '', attributes: {} };
+          msg.on('body', (stream, info) => {
             let buffer = '';
             stream.on('data', (chunk) => {
               buffer += chunk.toString('utf8');
             });
             stream.on('end', () => {
-              messages.push(buffer);
+              message.headers = buffer;
             });
+          });
+          msg.once('attributes', (attrs) => {
+            message.attributes = attrs;
+          });
+          msg.once('end', () => {
+            messages.push(message);
           });
         });
         fetch.on('end', () => resolve(messages));
+        fetch.on('error', (err) => reject(err));
       });
     });
   }
