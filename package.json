@@ -1,11 +1,25 @@
 {
   "name": "nestjs-imap",
-  "version": "1.0.4",
+  "version": "1.0.5",
+  "description": "A NestJS module for interacting with IMAP servers using the node-imap package.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
+  "keywords": [
+    "nestjs",
+    "imap",
+    "node-imap",
+    "email",
+    "mail"
+  ],
+  "author": "Alper Güçlü <alperguclu@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alperguclu/nestjs-imap.git"
+  },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
